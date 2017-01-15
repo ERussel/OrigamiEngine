@@ -106,7 +106,7 @@
 				return NO;
 			}
 
-			self.decoder = [pluginManager decoderForSource:_source error:nil];
+			self.decoder = [pluginManager decoderForSource:_source contentExtension:nil error:nil];
 			if (![_decoder open:_source]) {
 				return NO;
 			}

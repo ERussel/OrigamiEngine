@@ -36,7 +36,7 @@
     _inputUnit = [[ORGMInputUnit alloc] init];
     NSURL *flacUrl = [[NSBundle bundleForClass:self.class] URLForResource:@"multiple-vc"
                                                             withExtension:@"flac"];
-    STAssertTrue([_inputUnit openWithUrl:flacUrl], nil);
+    STAssertTrue([_inputUnit openWithUrl:flacUrl contentExtension:nil], nil);
 }
 
 - (void)tearDown {

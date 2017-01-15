@@ -69,6 +69,13 @@ typedef enum : NSInteger {
 @property (unsafe_unretained, nonatomic) id<ORGMEngineDelegate> delegate;
 
 /**
+ *  Starts new playblack process from corresponding source with provided output type of output unit
+ *  and source content type.
+ *  @param contentExtension Extension of the file corresponding to the provided url.
+ */
+- (void)playUrl:(NSURL *)url withOutputUnitClass:(Class)outputUnitClass contentExtension:(NSString*)extension;
+
+/**
  Starts new playback process from corresponding source with provided output type of output unit.
 
  @param outputUnitClass Class that will be used during output unit initialisation. Must be subclass of ORGMOutputUnit.
@@ -147,9 +154,10 @@ typedef enum : NSInteger {
  @discussion This method allows to implement prev/next functionality without significant memory overhead, because it will only create new input source and will reuse allocated converter and output unit. The `flush` flag determines undelying switching process. If `flush` is `YES`, than accumulated output buffer will be erased before switching to the next track. This will result in a small silence interval between tracks, because engine have to decode initial data, overall switch can be faster. If `flush` is `NO`, than engine will switch tracks only after playing data from output buffer. This will allow to decode initial data for next track.
 
  @param url The url object to be used as a source path during playback.
+ @param contentExtension Extension of the file corresponding to the provided url.
  @param flush A flag that allows you erase accumulated data before changing the track.
  */
-- (void)setNextUrl:(NSURL *)url withDataFlush:(BOOL)flush;
+- (void)setNextUrl:(NSURL *)url contentExtension:(NSString*)extension withDataFlush:(BOOL)flush;
 @end
 
 /**
@@ -168,6 +176,12 @@ typedef enum : NSInteger {
 - (NSURL *)engineExpectsNextUrl:(ORGMEngine *)engine;
 
 @optional
+
+/**
+ *  Asks delegate to provide extension corresponding to the provided url.
+ *  @return NSString extension object.
+ */
+- (NSString*)engine:(ORGMEngine*)engine expectsExtensionForUrl:(NSURL*)url;
 
 /**
  Notifies the delegate about current state changes.

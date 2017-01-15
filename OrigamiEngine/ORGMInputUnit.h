@@ -42,10 +42,12 @@
  Open input source and initializes necessary resources.
 
  @param url A url object to be used as a source path during playback.
-
+ @param extension Extension of the content corresponding to the url. Pass nil to use one extracted from
+ the url path.
+ 
  @return `YES` if success, otherwise `NO`.
  */
-- (BOOL)openWithUrl:(NSURL *)url;
+- (BOOL)openWithUrl:(NSURL *)url contentExtension:(NSString*)extension;
 
 /**
  Closes input unit and corresponding decoder, deallocates unnecessary resources.

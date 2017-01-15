@@ -38,7 +38,7 @@
     ORGMInputUnit *input = [[ORGMInputUnit alloc] init];
     NSURL *flacUrl = [[NSBundle bundleForClass:self.class] URLForResource:@"multiple-vc"
                                                             withExtension:@"flac"];
-    [input openWithUrl:flacUrl];
+    [input openWithUrl:flacUrl contentExtension:nil];
     _converter = [[ORGMConverter alloc] initWithInputUnit:input];
     
     ORGMOutputUnit *output = [[ORGMOutputUnit alloc] initWithConverter:_converter];
@@ -84,7 +84,7 @@
     ORGMInputUnit *input = [[ORGMInputUnit alloc] init];
     NSURL *flacUrl = [[NSBundle bundleForClass:self.class] URLForResource:@"multiple-vc"
                                                             withExtension:@"flac"];
-    [input openWithUrl:flacUrl];
+    [input openWithUrl:flacUrl contentExtension:nil];
     [_converter reinitWithNewInput:input withDataFlush:NO];
     
     STAssertEquals(_converter.inputUnit, input, nil);
@@ -99,7 +99,7 @@
     ORGMInputUnit *input = [[ORGMInputUnit alloc] init];
     NSURL *flacUrl = [[NSBundle bundleForClass:self.class] URLForResource:@"multiple-vc"
                                                             withExtension:@"flac"];
-    [input openWithUrl:flacUrl];
+    [input openWithUrl:flacUrl contentExtension:nil];
     [_converter reinitWithNewInput:input withDataFlush:YES];
     
     STAssertEquals(_converter.inputUnit, input, nil);

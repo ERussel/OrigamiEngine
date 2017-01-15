@@ -56,11 +56,12 @@
  @discussion Decoder class is determined from the source url extension.
  
  @param source A source object used to determine corresponding decoder.
+ @param extension Extension to choose decoder to process url content.
  @param error A pointer to an `NSError` object. You do not need to create an `NSError` object.
  
  @return A new decoder object or `nil` if corresponding plugin is not found.
  */
-- (id<ORGMDecoder>)decoderForSource:(id<ORGMSource>)source error:(NSError **)error;
+- (id<ORGMDecoder>)decoderForSource:(id<ORGMSource>)source contentExtension:(NSString*)extension error:(NSError **)error;
 
 /**
  Searches for the container decoder plugin and parses container content.

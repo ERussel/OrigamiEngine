@@ -61,7 +61,7 @@
 
 #pragma mark - public
 
-- (void)playUrl:(NSURL *)url withOutputUnitClass:(Class)outputUnitClass {
+- (void)playUrl:(NSURL *)url withOutputUnitClass:(Class)outputUnitClass contentExtension:(NSString*)extension {
     if (!outputUnitClass || ![outputUnitClass isSubclassOfClass:[ORGMOutputUnit class]]) {
 
         @throw [NSException exceptionWithName:NSInternalInconsistencyException
@@ -77,7 +77,7 @@
         self.input = input;
         [input release];
 
-        if (![_input openWithUrl:url]) {
+        if (![_input openWithUrl:url contentExtension:extension]) {
             self.currentState = ORGMEngineStateError;
             self.currentError = [NSError errorWithDomain:kErrorDomain
                                                     code:ORGMEngineErrorCodesSourceFailed
@@ -111,6 +111,10 @@
         [self setCurrentState:ORGMEngineStatePlaying];
         dispatch_source_merge_data([ORGMQueues buffering_source], 1);
     });
+}
+
+- (void)playUrl:(NSURL *)url withOutputUnitClass:(Class)outputUnitClass{
+    [self playUrl:url withOutputUnitClass:outputUnitClass contentExtension:nil];
 }
 
 - (void)playUrl:(NSURL *)url {
@@ -166,12 +170,12 @@
     [self seekToTime:time withDataFlush:NO];
 }
 
-- (void)setNextUrl:(NSURL *)url withDataFlush:(BOOL)flush {
+- (void)setNextUrl:(NSURL *)url contentExtension:(NSString *)extension withDataFlush:(BOOL)flush {
     if (!url) {
         [self stop];
     } else {
         dispatch_async([ORGMQueues processing_queue], ^{
-            if (![_input openWithUrl:url]) {
+            if (![_input openWithUrl:url contentExtension:extension]) {
                 [self stop];
             }
             [_converter reinitWithNewInput:_input withDataFlush:flush];
@@ -202,8 +206,13 @@
             return;
         }
 
+        NSString *extension = nil;
+        if ([_delegate respondsToSelector:@selector(engine:expectsExtensionForUrl:)]) {
+            extension = [_delegate engine:self expectsExtensionForUrl:nextUrl];
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self setNextUrl:nextUrl withDataFlush:NO];
+            [self setNextUrl:nextUrl contentExtension:extension withDataFlush:NO];
         });
     }
 }
